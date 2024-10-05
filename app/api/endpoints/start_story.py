@@ -8,9 +8,9 @@ router = APIRouter()
 @router.post("/")
 async def start_story(input_data: StartStoryInput):
     """
-    Initialize the story and return the first paragraphs along with choices.
+    Initialize the story and return the first paragraph along with choices.
     """
-    story_id = str(uuid.uuid4())
+    story_id = str(uuid.uuid4()) # maybe this come from back? no need to generate it
     
     create_story(
         story_id=story_id,
@@ -27,17 +27,10 @@ async def start_story(input_data: StartStoryInput):
         choice=f"Start a {input_data.genre} story with {input_data.main_character_name}"
     )
     
-    paragraphs, choice1, choice2 = generate_next_paragraph(initial_choice)
+    paragraph, choices = generate_next_paragraph(initial_choice)
     
     return {
         "story_id": story_id,
-        "paragraphs": paragraphs,
-        "choice1": {
-            "text": choice1.text,
-            "meta_caption": choice1.meta_caption
-        },
-        "choice2": {
-            "text": choice2.text,
-            "meta_caption": choice2.meta_caption
-        }
+        "paragraph": paragraph,
+        "choices": choices
     }

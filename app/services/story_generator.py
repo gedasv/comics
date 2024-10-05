@@ -7,7 +7,7 @@ story_states: dict[str, StoryState] = {}
 
 def generate_next_paragraph(user_choice: UserChoice):
     """
-    Generate the next paragraphs and choices based on the user's input.
+    Generate the next paragraph and choices based on the user's input.
     """
     story_id = user_choice.story_id
     story_state = story_states.get(story_id)
@@ -30,16 +30,16 @@ def generate_next_paragraph(user_choice: UserChoice):
     )
     
     # Update the story state
-    story_state.paragraphs.extend(result.paragraphs)
-    story_state.choices = [result.choice1.text, result.choice2.text]
-    story_state.current_state = result.paragraphs[-1]
+    story_state.paragraphs.append(result.paragraph)
+    story_state.choices = [choice.text for choice in result.choices]
+    story_state.current_state = result.paragraph
     story_state.story_progress += 1
     
     # TODO: Implement a more sophisticated ending condition
     if story_state.story_progress >= 10:
         story_state.choices = ["End the story", "End the story"]
     
-    return result.paragraphs, result.choice1, result.choice2
+    return result.paragraph, story_state.choices
 
 def get_story_state(story_id: str) -> StoryState:
     """

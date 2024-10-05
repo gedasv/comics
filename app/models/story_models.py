@@ -24,7 +24,7 @@ class StoryState(BaseModel):
     paragraphs: List[str] = []
     choices: List[str] = []
     current_state: Optional[str] = None
-    story_progress: int = 1  # Simple integer to track story progress
+    story_progress: int = 1
 
 # TODO: Implement a more sophisticated story progress tracking system
 # that maps integers to story stages (e.g., 1-4: intro, 5-9: rising action, etc.)
