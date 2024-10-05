@@ -9,7 +9,7 @@ class Choice(BaseModel):
     meta_description: str
 
 class StoryContent(BaseModel):
-    paragraph: str
+    paragraphs: List[str]
     choices: List[Choice]
 
 def get_openai_client():
@@ -30,13 +30,12 @@ def get_story_prompt():
     Previous Context: {context}
     User's Choice: {user_choice}
 
-    Generate the next paragraph of the story (about 400 words) and provide two new choices for the user.
-    The paragraph must be a continuation of the story, not a new paragraph. Paragraphs can be treated as many little paragraphs as needed, so it is okay to split with newlines.
-    The story must be without any dialogs.
+    Generate the next part of the story as a list of 5 short paragraphs of 40 words each and provide two new choices for the user.
+    Each paragraph in the list should be a self-contained unit of the story, without any dialogs.
     
     Ensure that the story adheres to the {genre} genre, maintains consistency with the main character, and follows the hero's journey template.
 
-    Respond with a JSON object containing a 'paragraph' field for the story content and a 'choices' array with two objects, each having 'text' (about 5 words) for the user-facing choice and 'meta_description' (about 15 words) for image generation input.
+    Respond with a JSON object containing a 'paragraphs' field with a list of paragraph strings for the story content and a 'choices' array with two objects, each having 'text' (about 5 words) for the user-facing choice and 'meta_description' (about 15 words) for image generation input.
     """
 
 def generate_story_content(

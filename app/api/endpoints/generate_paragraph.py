@@ -7,16 +7,16 @@ router = APIRouter()
 @router.post("/")
 async def generate_paragraph(user_choice: UserChoice):
     """
-    Generate the next paragraph based on the user's choice.
+    Generate the next paragraphs based on the user's choice.
     """
     try:
         story_state = get_story_state(user_choice.story_id)
         
-        paragraph, choices = generate_next_paragraph(user_choice)
+        paragraphs, choices = generate_next_paragraph(user_choice)
         
         return {
             "story_id": user_choice.story_id,
-            "paragraph": paragraph,
+            "paragraphs": paragraphs,
             "choices": [{"text": choice.text, "meta_description": choice.meta_description} for choice in choices],
             "paragraphs_count": len(story_state.paragraphs)
         }

@@ -27,10 +27,10 @@ async def start_story(input_data: StartStoryInput):
         choice=f"Start a {input_data.genre} story with {input_data.main_character_name}"
     )
     
-    paragraph, choices = generate_next_paragraph(initial_choice)
+    paragraphs, choices = generate_next_paragraph(initial_choice)
     
     return {
         "story_id": story_id,
-        "paragraph": paragraph,
+        "paragraphs": paragraphs,
         "choices": [{"text": choice.text, "meta_description": choice.meta_description} for choice in choices]
     }

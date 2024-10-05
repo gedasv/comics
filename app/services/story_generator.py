@@ -7,7 +7,7 @@ story_states: dict[str, StoryState] = {}
 
 def generate_next_paragraph(user_choice: UserChoice):
     """
-    Generate the next paragraph and choices based on the user's input.
+    Generate the next paragraphs and choices based on the user's input.
     """
     story_id = user_choice.story_id
     story_state = story_states.get(story_id)
@@ -15,7 +15,7 @@ def generate_next_paragraph(user_choice: UserChoice):
     if not story_state:
         raise HTTPException(status_code=404, detail="Story not found")
 
-    context = "\n".join(story_state.paragraphs)
+    context = "\n\n".join(story_state.paragraphs)
     
     result = generate_story_content(
         story_state.genre,
@@ -30,9 +30,9 @@ def generate_next_paragraph(user_choice: UserChoice):
     )
     
     # Update the story state
-    story_state.paragraphs.append(result.paragraph)
+    story_state.paragraphs.extend(result.paragraphs)
     story_state.choices = [Choice(text=choice.text, meta_description=choice.meta_description) for choice in result.choices]
-    story_state.current_state = result.paragraph
+    story_state.current_state = result.paragraphs[-1]  # Set the last paragraph as the current state
     story_state.story_progress += 1
     
     # TODO: Implement a more sophisticated ending condition
@@ -42,7 +42,7 @@ def generate_next_paragraph(user_choice: UserChoice):
             Choice(text="End the story", meta_description="An alternative ending scene for the story")
         ]
     
-    return result.paragraph, story_state.choices
+    return result.paragraphs, story_state.choices
 
 def get_story_state(story_id: str) -> StoryState:
     """
