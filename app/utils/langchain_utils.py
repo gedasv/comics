@@ -30,7 +30,7 @@ def get_story_prompt():
     Previous Context: {context}
     User's Choice: {user_choice}
 
-    Generate the next part of the story as a list of 5 short paragraphs of 40 words each and provide two new choices for the user.
+    Generate the next part of the story as a list of 3 short paragraphs of 30 words each and provide two new choices for the user.
     Each paragraph in the list should be a self-contained unit of the story, without any dialogs.
     
     Ensure that the story adheres to the {genre} genre, maintains consistency with the main character, and follows the hero's journey template.
