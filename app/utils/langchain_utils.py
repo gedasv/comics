@@ -35,6 +35,7 @@ def get_story_prompt():
 
     Generate the next part of the story as a list of 3 short paragraphs of 30 words each and provide two new choices for the user.
     Each paragraph in the list should be a self-contained unit of the story, without any dialogs.
+    Assume that your audience is an 8th grader. Your vocabulary must be simple and your language must be clear and easy to understand.
     
     Ensure that the story adheres to the {genre} genre, maintains consistency with the main character, and follows the hero's journey template.
     Consider both the current stage and the upcoming stage when crafting the story and choices.
