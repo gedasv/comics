@@ -1,0 +1,26 @@
+We will be creating a personalized comic generation web app.
+
+The idea is that the user will see a choice of a theme. Then, he hypothetically chooses a theme, and will now see a comic generate.
+
+LLM will be generating the whole comic. We will also have branching paths/choices for the user to select.
+
+There is a challenge of:
+- generating a coherent story with a template (for example we follow the hero template)
+- generating branching paths from the story (so use selects a choice, for example LLM generates choice A and choice B, but any choice should still follow the story-telling template)
+
+We will have backend/frontend from another team, this is not what we are responsible for. We will only be doing the LLM part.
+
+What also matters for us to manage the context, manage the RAG as we will need to maintain certain features consistent in the specific user's story - main character, genre, time, place...
+
+We also need to track where we are currently in the story, is it intro, mid, ending, etc. so I was thinking maybe just incrementally going forward to keep track. Maybe very easy to know the state by have a "story_progress" field that would be like an integer, but if it's 1-4 then it's "intro" or "climax" if 10-15 and so on.
+
+We will only need to generate a paragraph, and maybe a separate /start_story endpoint that would init everything. We need an MVP only. This is a hackathon. 
+The main endpoint /paragraph and then everytime this is called, we generate the next paragraph of the story.
+
+The reason we only care about a paragraph, because every paragraph we generate will be given to another service for backend team that will split it into separate pages, panels and captions. Our paragraphs are the main brain of the comic, the driving force. The backend team will not get any context, they will just do the "make it look nice". After each paragraph the user will be able to input a choice. Keep in mind that we also are supposed to output 2 choices.
+
+I was thinking maybe the main endpoint could have a "story_choices" output field or something that will be given to backend team such that they then make it pretty and present to the user to select one of the choices. We should probably have the "input_choice" field that will drive the choices inside our story maker brain. 
+
+This will be deployed and exposed later, let's not worry too much about the deployment. We just want this to work. If we need to choose a tech stack, let's go with fastapi. Maybe heroku for deployment, but this is only AFTER everything works. I think we need RAG and Langchain for this.
+
+We will be using gpt-4o. I think we also need to make use of the json that we can get from the api openai docs. Keep in mind to keep this simple for MVP. We also want to make this stateful for MVP, the database stuff will come into play later.
