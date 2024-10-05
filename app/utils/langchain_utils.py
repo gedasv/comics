@@ -6,6 +6,7 @@ from typing import List
 
 class Choice(BaseModel):
     text: str
+    meta_description: str
 
 class StoryContent(BaseModel):
     paragraph: str
@@ -29,13 +30,13 @@ def get_story_prompt():
     Previous Context: {context}
     User's Choice: {user_choice}
 
-    Generate the next paragraph of the story (about 400 words) and provide two new choices (about 5 words) for the user.
+    Generate the next paragraph of the story (about 400 words) and provide two new choices for the user.
     The paragraph must be a continuation of the story, not a new paragraph. Paragraphs can be treated as many little paragraphs as needed, so it is okay to split with newlines.
     The story must be without any dialogs.
     
     Ensure that the story adheres to the {genre} genre, maintains consistency with the main character, and follows the hero's journey template.
 
-    Respond with a JSON object containing a 'paragraph' field for the story content and a 'choices' array with two 'text' fields for the choices.
+    Respond with a JSON object containing a 'paragraph' field for the story content and a 'choices' array with two objects, each having 'text' (about 5 words) for the user-facing choice and 'meta_description' (about 15 words) for image generation input.
     """
 
 def generate_story_content(
@@ -74,5 +75,6 @@ def generate_story_content(
         temperature=0.7
     )
 
-    story_content = StoryContent.model_validate_json(completion.choices[0].message.content)
+    response_content = completion.choices[0].message.content
+    story_content = StoryContent.model_validate_json(response_content)
     return story_content

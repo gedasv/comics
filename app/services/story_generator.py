@@ -1,5 +1,5 @@
 from app.models.story_models import UserChoice, StoryState
-from app.utils.langchain_utils import generate_story_content
+from app.utils.langchain_utils import generate_story_content, Choice
 from fastapi import HTTPException
 
 # In-memory storage for story states (replace with database later)
@@ -31,13 +31,16 @@ def generate_next_paragraph(user_choice: UserChoice):
     
     # Update the story state
     story_state.paragraphs.append(result.paragraph)
-    story_state.choices = [choice.text for choice in result.choices]
+    story_state.choices = [Choice(text=choice.text, meta_description=choice.meta_description) for choice in result.choices]
     story_state.current_state = result.paragraph
     story_state.story_progress += 1
     
     # TODO: Implement a more sophisticated ending condition
     if story_state.story_progress >= 10:
-        story_state.choices = ["End the story", "End the story"]
+        story_state.choices = [
+            Choice(text="End the story", meta_description="The final scene of the story, showing the conclusion"),
+            Choice(text="End the story", meta_description="An alternative ending scene for the story")
+        ]
     
     return result.paragraph, story_state.choices
 

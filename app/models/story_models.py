@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from app.utils.langchain_utils import Choice
 
 class StartStoryInput(BaseModel):
     genre: str
@@ -22,7 +23,7 @@ class StoryState(BaseModel):
     main_character_name: str
     main_character_description: str
     paragraphs: List[str] = []
-    choices: List[str] = []
+    choices: List[Choice] = []
     current_state: Optional[str] = None
     story_progress: int = 1
 

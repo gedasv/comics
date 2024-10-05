@@ -10,7 +10,7 @@ async def start_story(input_data: StartStoryInput):
     """
     Initialize the story and return the first paragraph along with choices.
     """
-    story_id = str(uuid.uuid4()) # maybe this come from back? no need to generate it
+    story_id = str(uuid.uuid4())
     
     create_story(
         story_id=story_id,
@@ -32,5 +32,5 @@ async def start_story(input_data: StartStoryInput):
     return {
         "story_id": story_id,
         "paragraph": paragraph,
-        "choices": choices
+        "choices": [{"text": choice.text, "meta_description": choice.meta_description} for choice in choices]
     }
