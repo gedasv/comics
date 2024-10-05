@@ -3,6 +3,7 @@ import os
 from openai import OpenAI
 from pydantic import BaseModel
 from typing import List
+from app.utils.story_progression import get_story_context
 
 class Choice(BaseModel):
     text: str
@@ -23,7 +24,9 @@ def get_story_prompt():
     You are a comic book storyteller crafting an interactive {genre} comic: {genre_description} 
     The main character is named {main_character_name}, described as: {main_character_description}
     The location is {location}, described as: {location_description}
-    Current story progress: {story_progress}/10 (1-3: intro, 4-7: rising action, 8-9: climax, 10: resolution)
+
+    Story Structure Context:
+    {story_context}
 
     Based on the following context and user's choice, continue the story:
 
@@ -34,8 +37,15 @@ def get_story_prompt():
     Each paragraph in the list should be a self-contained unit of the story, without any dialogs.
     
     Ensure that the story adheres to the {genre} genre, maintains consistency with the main character, and follows the hero's journey template.
+    Consider both the current stage and the upcoming stage when crafting the story and choices.
 
-    Respond with a JSON object containing a 'paragraphs' field with a list of paragraph strings for the story content and a 'choices' array with two objects, each having 'text' (about 5 words) for the user-facing choice and 'meta_description' (about 15 words) for image generation input.
+    Respond with a JSON object containing:
+    1. A 'paragraphs' field with a list of 3 paragraph strings for the story content.
+    2. A 'choices' array with two objects, each having:
+       - 'text' (about 5 words) for the user-facing choice
+       - 'meta_description' (about 15 words) for image generation input
+    
+    Make sure the choices are meaningful and will lead the story towards the next stage effectively.
     """
 
 def generate_story_content(
@@ -51,6 +61,7 @@ def generate_story_content(
 ) -> StoryContent:
     client = get_openai_client()
     prompt = get_story_prompt()
+    story_context = get_story_context(story_progress)
     
     messages = [
         {"role": "system", "content": "You are a comic book storyteller. Generate story content based on the given parameters."},
@@ -63,7 +74,7 @@ def generate_story_content(
             user_choice=user_choice,
             location=location,
             location_description=location_description,
-            story_progress=story_progress
+            story_context=story_context
         )}
     ]
 
