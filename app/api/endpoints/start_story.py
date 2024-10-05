@@ -12,7 +12,7 @@ async def start_story(input_data: StartStoryInput):
     """
     story_id = str(uuid.uuid4())
     
-    create_story(
+    story_state = create_story(
         story_id=story_id,
         genre=input_data.genre,
         genre_description=input_data.genre_description,
@@ -31,6 +31,7 @@ async def start_story(input_data: StartStoryInput):
     
     return {
         "story_id": story_id,
+        "title": story_state.title,
         "paragraphs": paragraphs,
         "choices": [{"text": choice.text, "meta_description": choice.meta_description} for choice in choices]
     }

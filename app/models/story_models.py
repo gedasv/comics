@@ -16,6 +16,7 @@ class UserChoice(BaseModel):
 
 class StoryState(BaseModel):
     story_id: str
+    title: str
     genre: str
     genre_description: str
     location: str
