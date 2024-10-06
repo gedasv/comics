@@ -40,13 +40,23 @@ def get_story_prompt():
     Ensure that the story adheres to the {genre} genre, maintains consistency with the main character, and follows the hero's journey template.
     Consider both the current stage and the upcoming stage when crafting the story and choices.
 
+    For the choices:
+    1. Create two distinctly different paths for the story to branch into.
+    2. The choices should present a clear contrast, such as:
+       - Moral dilemmas (e.g., sacrifice vs. self-preservation)
+       - Strategic decisions (e.g., stealth vs. direct confrontation)
+       - Character development (e.g., trust vs. suspicion)
+       - Plot direction (e.g., explore a new area vs. confront the antagonist)
+    3. Ensure that each choice would lead to significantly different outcomes or story directions.
+    4. The choices should be impactful and have clear consequences for the character or story.
+
     Respond with a JSON object containing:
     1. A 'paragraphs' field with a list of 3 paragraph strings for the story content.
     2. A 'choices' array with two objects, each having:
-       - 'text' (about 5 words) for the user-facing choice
+       - 'text' (about 5-10 words) for the user-facing choice
        - 'meta_description' (about 15 words) for image generation input
     
-    Make sure the choices are meaningful and will lead the story towards the next stage effectively.
+    Make sure the choices are meaningful, contrasting, and will lead the story towards distinctly different paths.
     """
 
 def generate_story_content(

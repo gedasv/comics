@@ -18,7 +18,7 @@ async def generate_paragraph(user_choice: UserChoice):
             "story_id": user_choice.story_id,
             "paragraphs": paragraphs,
             "choices": [{"text": choice.text, "meta_description": choice.meta_description} for choice in choices],
-            "paragraphs_count": len(story_state.paragraphs)
+            "story_progress": story_state.story_progress
         }
     except HTTPException as e:
         raise e
